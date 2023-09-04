@@ -59,7 +59,7 @@ function StudentTable() {
                 </a>
               </td>
               <td>
-              <a href={"/PaymentCreate/" + student.student_id}>
+              <a href={"/Paymentedit/" + student.student_id}>
                   <Button variant="secondary">Payment</Button>
                 </a>
               </td>

@@ -35,10 +35,13 @@ import StudentTable from './Student/StudentTable';
 import EditStudentForm from './Student/EditStudent';
 import Call from './StaffDashboard/Call';
 import UpcomingBatchTable from './Batch/BatchList';
-import PaymentCreate from './Payment/PaymentCreate'
+import PaymentCreate from './Payment/PaymentForm'
 import Payment from './Payment/Payment'
 import PaymentList from './Payment/PaymentList'
 import Gallery from './Album/Gallery'
+import PaymentForm from './Payment/PaymentForm';
+import PaymentEdit from './Payment/Paymentedit';
+import Receipt from './Payment/Receipt';
 
 //import Gallery from './Gallery';
 
@@ -66,7 +69,7 @@ root.render(
           <Route path="followups" element={<Followups />} />
           <Route path="addenq" element={<AddEnquiry />} />
           <Route path="allenq" element={<AllEnq />} />
-          <Route path="newreg/:id" element={<StudentRegistrationForm />} />
+          <Route path="newreg/:enquiry_id" element={<StudentRegistrationForm />} />
           <Route path="placerecord" element={<StaffSidePlacement />} />
           <Route path="addplace" element={<AddPlacement />} />
           <Route path="editplace/:id" element={<PlacementEdit />} />
@@ -93,9 +96,11 @@ root.render(
           <Route path="allstaff" element={<AllStaff />} />
 
 
-        <Route path='PaymentCreate/:id' element={<PaymentCreate/>}></Route>
+        <Route path='/PaymentCreate/:enquiry_id/:selectedBatchId' element={<PaymentForm/>}></Route>
          <Route path='PaymentList' element ={<PaymentList/>}></Route>
          <Route path='Payment/:id' element={<Payment/>}></Route>
+         <Route path='/Paymentedit/:student_id' element={<PaymentEdit/>}></Route>
+         <Route path="rec/:student_id" element={<Receipt/>} />
 
         </Route>
 

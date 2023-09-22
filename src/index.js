@@ -42,6 +42,9 @@ import Gallery from './Album/Gallery'
 import PaymentForm from './Payment/PaymentForm';
 import PaymentEdit from './Payment/Paymentedit';
 import Receipt from './Payment/Receipt';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import NewPayment from './Payment/NewPayment';
+
 
 //import Gallery from './Gallery';
 
@@ -59,6 +62,7 @@ root.render(
           <Route path="About" element={<AboutUs />} />
           <Route path="Placement" element={<GetPlacement />} />
            <Route path="gallery" element={<Gallery/>} /> 
+           <Route path="Courses" element={<Course/>} />
 
 
           <Route path="Stafflogin" element={<StaffLogin />} />
@@ -94,6 +98,7 @@ root.render(
 
 
           <Route path="allstaff" element={<AllStaff />} />
+          
 
 
         <Route path='/PaymentCreate/:enquiry_id/:selectedBatchId' element={<PaymentForm/>}></Route>
@@ -101,6 +106,8 @@ root.render(
          <Route path='Payment/:id' element={<Payment/>}></Route>
          <Route path='/Paymentedit/:student_id' element={<PaymentEdit/>}></Route>
          <Route path="rec/:student_id" element={<Receipt/>} />
+         <Route path="/newpay/:student_id/:batch_fees" element={<NewPayment/>} />
+         
 
         </Route>
 

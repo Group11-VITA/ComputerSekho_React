@@ -43,7 +43,7 @@ function Receipt() {
       });
 
     // Fetch payment data based on student_id
-    fetch(`http://localhost:8080/api/getpaybystudentid/${student_id}`)
+    fetch(`http://localhost:8080/api/getPaymentbystdID/${student_id}`)
       .then((response) => response.json())
       .then((data) => {
         setPaymentData(data);

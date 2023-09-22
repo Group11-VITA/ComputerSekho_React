@@ -1,27 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import BootstrapTable from 'react-bootstrap-table-next';
 import axios from 'axios';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Button } from 'reactstrap';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import Dashoption from '../Login/dashoption';
+import '../CSS/CustomTable.css';
 
 const formatDate = (dateTimeString) => {
   const date = new Date(dateTimeString);
-  return date.toISOString().split("T")[0];
+  return date.toISOString().split('T')[0];
 };
 
 const Bootstraptab1 = () => {
   const [enquiry, setEnquiry] = useState([]);
+  const [filteredEnquiry, setFilteredEnquiry] = useState([]);
+  const [enquirerNameFilter, setEnquirerNameFilter] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/getenq')
-      .then(response => {
-        const openEnquiries = response.data.filter(item => !item.enquiry_processed_flag);
+    axios
+      .get('http://localhost:8080/api/getenq')
+      .then((response) => {
+        const openEnquiries = response.data.filter(
+          (item) => !item.enquiry_processed_flag
+        );
         setEnquiry(openEnquiries);
+        setFilteredEnquiry(openEnquiries);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, []);
@@ -29,26 +34,36 @@ const Bootstraptab1 = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const staffIdFromURL = queryParams.get('staff_id');
 
+  const handleFilterChange = (filterValue) => {
+    setEnquirerNameFilter(filterValue);
+
+    const filteredData = enquiry.filter((row) =>
+      row.enquirer_name.toLowerCase().includes(filterValue.toLowerCase())
+    );
+    setFilteredEnquiry(filteredData);
+  };
+
   const columns = [
     {
       dataField: 'enquiry_id',
       text: 'Enq.Id',
       sort: true,
       headerStyle: { width: '50px' },
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
     },
     {
-      filter: textFilter(),
       dataField: 'enquirer_name',
       text: 'Enquirer Name',
       sort: true,
+      filter: textFilter({
+        onFilter: handleFilterChange, // Add text filter for enquirer name
+        value: enquirerNameFilter, // Controlled filter value
+      }),
     },
     {
       dataField: 'enquirer_mobile',
       text: 'Phone',
       sort: true,
       headerStyle: { width: '150px' },
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'center' },
     },
     {
       dataField: 'follow_up_date',
@@ -56,7 +71,6 @@ const Bootstraptab1 = () => {
       formatter: formatDate,
       sort: true,
       headerStyle: { width: '140px' },
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textAlign: 'center' },
     },
     {
       dataField: 'enquirer_email_id',
@@ -67,7 +81,6 @@ const Bootstraptab1 = () => {
       dataField: 'followup_msg',
       text: 'Followup Message',
       sort: true,
-      style: { textAlign: 'center' },
     },
     {
       dataField: 'staff_id',
@@ -75,55 +88,25 @@ const Bootstraptab1 = () => {
       filter: textFilter({
         defaultValue: staffIdFromURL,
       }),
-      hidden: false,
       headerStyle: { width: '80px' },
-      style: { textAlign: 'center', width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
     },
     {
       dataField: 'actions',
       formatter: (cell, row) => (
-        <a href={"/call/" + row.enquiry_id}>
-          <Button variant="secondary">Call</Button>
+        <a href={`/call/${row.enquiry_id}`}>
+          <Button className="btn btn-primary call-button">Call</Button>
         </a>
       ),
-      headerStyle: { width: '70px' },
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
     },
     {
       dataField: 'actions',
       formatter: (cell, row) => (
-        <a href={"/newreg/" + row.enquiry_id}>
-          <Button variant="secondary">Register</Button>
+        <a href={`/newreg/${row.enquiry_id}`}>
+          <Button className="btn btn-success register-button">Register</Button>
         </a>
       ),
-      headerStyle: { width: '100px' },
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
     },
-    // {
-    //   dataField: 'enquiry_processed_flag',
-    //   text: 'Status',
-    //   formatter: (cellContent, row) => (
-    //     <div
-    //       style={{
-    //         backgroundColor: row.enquiry_processed_flag ? "red" : "green",
-    //         color: "white",
-    //         textAlign: "center",
-    //       }}
-    //     >
-    //       {row.enquiry_processed_flag ? "Close" : "Open"}
-    //     </div>
-    //   ),
-    //   sort: true,
-    //   headerStyle: { width: '80px' }, // Set the width for the header
-    //   style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
-    // },
   ];
-
-  const options = {
-    page: 1,
-    sizePerPage: 10,
-    totalSize: enquiry.length,
-  };
 
   return (
     <>
@@ -135,17 +118,59 @@ const Bootstraptab1 = () => {
           <div className="col-md-10">
             <div className="card shadow">
               <div className="card-body">
-                <div className="table-responsive" style={{ width: '100%' }}>
-                  {enquiry.length > 0 ? (
-                    <BootstrapTable
-                      striped
-                      hover
-                      keyField="enquiry_id"
-                      data={enquiry}
-                      columns={columns}
-                      filter={filterFactory()}
-                      pagination={paginationFactory(options)}
-                    />
+                <div className="table-responsive">
+                  {filteredEnquiry.length > 0 ? (
+                    <>
+                      <input
+                        type="text"
+                        placeholder="Search by Enquirer Name"
+                        value={enquirerNameFilter}
+                        onChange={(e) => handleFilterChange(e.target.value)}
+                        className="form-control mb-2"
+                      />
+                      <table className="custom-table table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th className="w-5">Enq.Id</th>
+                            <th>Enquirer Name</th>
+                            <th className="w-15">Phone</th>
+                            <th className="w-15">Follow-up Date</th>
+                            <th>Email</th>
+                            <th>Followup Message</th>
+                            <th className="w-10">Staff Id</th>
+                            <th className="w-5">Call</th>
+                            <th className="w-10">Register</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredEnquiry.map((row) => (
+                            <tr key={row.enquiry_id}>
+                              <td>{row.enquiry_id}</td>
+                              <td>{row.enquirer_name}</td>
+                              <td>{row.enquirer_mobile}</td>
+                              <td>{formatDate(row.follow_up_date)}</td>
+                              <td>{row.enquirer_email_id}</td>
+                              <td>{row.followup_msg}</td>
+                              <td>{row.staff_id}</td>
+                              <td>
+                                <a href={`/call/${row.enquiry_id}`}>
+                                  <Button className="btn btn-primary call-button">
+                                    Call
+                                  </Button>
+                                </a>
+                              </td>
+                              <td>
+                                <a href={`/newreg/${row.enquiry_id}`}>
+                                  <Button className="btn btn-success register-button">
+                                    Register
+                                  </Button>
+                                </a>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </>
                   ) : (
                     <p>Loading data...</p>
                   )}
@@ -155,7 +180,6 @@ const Bootstraptab1 = () => {
           </div>
         </div>
       </div>
-
     </>
   );
 };

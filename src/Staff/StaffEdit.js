@@ -75,8 +75,6 @@ function StaffEdit() {
                 <br /><br />
                 <button type="submit">Save</button>
             </form>
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
         </div>
     );
 }

@@ -12,9 +12,9 @@ function Home() {
                 <div className="row">
                     <div className="col-md-12 text-center">
                         <img
-                            src="images/main.jpg"
+                            src="images/education.jpg"
                             alt="Main"
-                            className="img-fluid"
+                            className="img"
                         />
                     </div>
                 </div>

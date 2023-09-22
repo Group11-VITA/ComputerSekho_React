@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import PaymentForm from "../Payment/PaymentForm";
+import "../CSS/StudentRegistrationform.css";
 
 function StudentRegistrationForm() {
   const navigate = useNavigate();

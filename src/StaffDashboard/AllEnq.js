@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Container, Row, Col } from "reactstrap";
 import Dashoption from "../Login/dashoption";
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter'; // Import filterFactory and textFilter
+
+// Import your custom CSS file
+import '../CSS/Style.css';
 
 export function AllEnq(props) {
   const [enquiries, setEnquiries] = useState([]);
@@ -29,20 +32,18 @@ export function AllEnq(props) {
       dataField: 'enquiry_id',
       text: 'Enq Id',
       sort: true,
-      headerStyle: { width: '50px' }, // Set the width for the header
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+      headerStyle: { width: '50px' },
     },
     {
       dataField: 'enquirer_name',
       text: 'Name',
-      filter: textFilter(), // Apply text filter to this column
+      filter: textFilter(),
     },
     {
       dataField: 'enquirer_mobile',
       text: 'Mobile',
       sort: true,
-      headerStyle: { width: '150px' }, // Set the width for the header
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+      headerStyle: { width: '150px' },
     },
     {
       dataField: 'enquirer_email_id',
@@ -65,18 +66,13 @@ export function AllEnq(props) {
       text: 'Status',
       formatter: (cellContent, row) => (
         <div
-          style={{
-            backgroundColor: row.enquiry_processed_flag ? "red" : "green",
-            color: "white",
-            textAlign: "center",
-          }}
+          className={row.enquiry_processed_flag ? "status-close" : "status-open"}
         >
           {row.enquiry_processed_flag ? "Close" : "Open"}
         </div>
       ),
       sort: true,
-      headerStyle: { width: '80px' }, // Set the width for the header
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+      headerStyle: { width: '80px' },
     },
     {
       dataField: 'actions',
@@ -87,8 +83,7 @@ export function AllEnq(props) {
         </a>
       ),
       sort: true,
-      headerStyle: { width: '80px' }, // Set the width for the header
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+      headerStyle: { width: '80px' },
     },
     {
       dataField: 'actions',
@@ -99,8 +94,7 @@ export function AllEnq(props) {
         </a>
       ),
       sort: true,
-      headerStyle: { width: '100px' }, // Set the width for the header
-      style: { width: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+      headerStyle: { width: '100px' },
     },
   ];
 
@@ -110,7 +104,7 @@ export function AllEnq(props) {
       <Container fluid>
         <Row>
           <Col md="12">
-            <div className="table-responsive"> {/* Use the full width of the container */}
+            <div className="table-responsive">
               <br />
               <h2 align="center">Enquiry List</h2>
               <br />
@@ -118,10 +112,16 @@ export function AllEnq(props) {
                 striped
                 bordered
                 hover
-                keyField='enquiry_id'
+                keyField="enquiry_id"
                 data={enquiries}
                 columns={columns}
                 filter={filterFactory()}
+                rowStyle={(row, rowIndex) => ({
+                  backgroundColor: row.enquiry_processed_flag
+                    ? "#f44336" // Red for close status
+                    : "#4caf50", // Green for open status
+                  color: "white",
+                })}
               />
             </div>
           </Col>

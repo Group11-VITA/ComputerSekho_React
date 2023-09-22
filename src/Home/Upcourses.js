@@ -36,7 +36,7 @@ function Upcourses() {
      
     <br/><br/><br/>
       <Col md="11" style={{marginLeft:"40px"}}>
-      <Table striped bordered hover>
+      <Table striped bordered hover  variant="dark"   responsive>
         <thead>
           <tr>
             <th>Batch ID</th>

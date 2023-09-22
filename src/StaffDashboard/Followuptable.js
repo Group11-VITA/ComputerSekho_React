@@ -4,6 +4,7 @@ import axios from 'axios';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { Button } from 'reactstrap';
+import '../CSS/Followup.css'; 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 const formatDate = (dateTimeString) => {

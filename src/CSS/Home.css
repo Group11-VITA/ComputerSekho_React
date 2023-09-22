@@ -57,4 +57,21 @@
   tbody tr {
     animation: fadeIn 0.5s ease;
   }
-  
+  /* Global Styles */
+.container-fluid {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  margin-top: 30px;
+}
+
+/* Home Component Styles */
+.col-md-12.text-center img {
+  max-width: 100%;
+  display: block; /* Add this to make the image a block element */
+  margin: 0 auto; /* Center the image horizontally */
+}
+
+/* Rest of your CSS styles */
